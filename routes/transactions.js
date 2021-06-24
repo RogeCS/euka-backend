@@ -1,13 +1,16 @@
 const express = require('express');
-const { transactionsMock } = require('../utils/mocks/transactions');
+const TransactionsService = require('../services/transactions');
 
 function transactionsApi(app) {
   const router = express.Router();
   app.use("/api/transactions", router);
 
+  const transactionsService = new TransactionsService();
+
   router.get('/', async function(req, res, next){
+    const { tags } = req.query;
     try {
-      const transactions = await Promise.resolve(transactionsMock);
+      const transactions = await transactionsService.getTransactions({ tags });
       res.status(200).json({
         data: transactions,
         message: 'transactions listed',
@@ -18,8 +21,9 @@ function transactionsApi(app) {
   });
 
   router.get('/:transactionId', async function(req, res, next){
+    const { transactionId } = req.params;
     try {
-      const transaction = await Promise.resolve(transactionsMock[0]);
+      const transaction = await transactionsService.getTransaction({ transactionId });
       res.status(200).json({
         data: transaction,
         message: 'transaction retrieved',
@@ -30,8 +34,9 @@ function transactionsApi(app) {
   });
 
   router.post('/', async function(req, res, next){
+    const { body: transaction } = req;
     try {
-      const createTransactionId = await Promise.resolve(transactionsMock[0].id);
+      const createTransactionId = await transactionsService.createTransaction({ transaction });
       res.status(201).json({
         data: createTransactionId,
         message: 'transaction created',
@@ -42,8 +47,10 @@ function transactionsApi(app) {
   });
 
   router.put('/:transactionId', async function(req, res, next){
+    const { transactionId } = req.params;
+    const { body: transaction } = req;
     try {
-      const updatedTransactionId = await Promise.resolve(transactionsMock[0].id);
+      const updatedTransactionId = await transactionsService.updateTransaction({ transactionId, transaction});
       res.status(200).json({
         data: updatedTransactionId,
         message: 'transaction updated',
@@ -53,9 +60,24 @@ function transactionsApi(app) {
     }
   });
 
-  router.delete('/:transactionId', async function(req, res, next){
+  router.patch('/:transactionId', async function(req, res, next){
+    const { transactionId } = req.params;
+    const { body: transaction } = req;
     try {
-      const deleteTransaction = await Promise.resolve(transactionsMock[0].id);
+      const updatedTransactionId = await transactionsService.partialUpdateTransaction({ transactionId, transaction});
+      res.status(200).json({
+        data: updatedTransactionId,
+        message: 'transaction partially updated',
+      })
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  router.delete('/:transactionId', async function(req, res, next){
+    const { transactionId } = req.params;
+    try {
+      const deleteTransaction = await transactionsService.getTransactions({ transactionId });
       res.status(200).json({
         data: deleteTransaction,
         message: 'transaction deleted',
