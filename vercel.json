@@ -1,0 +1,12 @@
+{
+  "name": "euka",
+  "version": 2,
+  "builds": [{ "src": "index.js", "use": "@vercel/node" }],
+  "routes": [{ "src": "/(.*)", "dest": "index.js" }],
+  "env": {
+    "DB_USER": "@euka-db-user",
+    "DB_PASSWORD": "@euka-db-password",
+    "DB_HOST": "@euka-db-host",
+    "DB_NAME": "@euka-db-name"
+  }
+}
