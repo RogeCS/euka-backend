@@ -1,33 +1,53 @@
-const { transactionsMock } = require('../utils/mocks/transactions');
+const MongoLib = require('../lib/mongo');
 
-class TransactionsService{
-  async getTransactions() {
-    const transactions = await Promise.resolve(transactionsMock);
+class TransactionsService {
+  constructor() {
+    this.collection = 'transactions';
+    this.mongoDB = new MongoLib();
+  }
+
+  async getTransactions({ tags }) {
+    const query = tags && { tags: { $in: tags } };
+    const transactions = await this.mongoDB.getAll(this.collection, query);
     return transactions || [];
   }
 
-  async getTransaction() {
-    const transaction = await Promise.resolve(transactionsMock[0]);
+  async getTransaction({ transactionId }) {
+    const transaction = await this.mongoDB.get(this.collection, transactionId);
     return transaction || {};
   }
 
-  async createTransaction() {
-    const createdTransactionId = await Promise.resolve(transactionsMock[0].id);
+  async createTransaction({ transaction }) {
+    const createdTransactionId = await this.mongoDB.create(
+      this.collection,
+      transaction
+    );
     return createdTransactionId;
   }
 
-  async updateTransaction() {
-    const updatedTransactionId = await Promise.resolve(transactionsMock[0].id);
+  async updateTransaction({ transactionId, transaction }) {
+    const updatedTransactionId = await this.mongoDB.update(
+      this.collection,
+      transactionId,
+      transaction
+    );
     return updatedTransactionId;
   }
 
-  async partialUpdateTransaction() {
-    const updatedTransactionId = await Promise.resolve(transactionsMock[0].id);
+  async partialUpdateTransaction({ transactionId, transaction }) {
+    const updatedTransactionId = await this.mongoDB.update(
+      this.collection,
+      transactionId,
+      transaction
+    );
     return updatedTransactionId;
   }
 
-  async deleteTransaction() {
-    const deletedTransactionId = await Promise.resolve(transactionsMock[0].id);
+  async deleteTransaction({ transactionId }) {
+    const deletedTransactionId = await this.mongoDB.delete(
+      this.collection,
+      transactionId
+    );
     return deletedTransactionId;
   }
 }
