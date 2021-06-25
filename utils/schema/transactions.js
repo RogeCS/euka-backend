@@ -1,6 +1,6 @@
 const joi = require('@hapi/joi');
 
-const transactionIdSchema = joi.string().regex(/^[0-0a-fA-F]{24}$/);
+const transactionIdSchema = joi.string(); //.regex(/^[0-0a-fA-F]{25}$/);
 const transactionTitleSchema = joi.string().max(40);
 const transactionDateSchema = joi.date().iso();
 const transactionAmountSchema = joi.number().min(0).max(1000000000000000);
