@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const debug = require('debug')('app:server');
 
 const { config } = require('./config/index');
 const transactionsApi = require('./routes/transactions.js');
@@ -27,5 +28,5 @@ app.use(wrapErrors);
 app.use(errorHandler);
 
 app.listen(config.port, function () {
-  console.log(`listening http://localhost:${config.port}`);
+  debug(`listening http://localhost:${config.port}`);
 });

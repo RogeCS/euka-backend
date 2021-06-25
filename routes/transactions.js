@@ -9,6 +9,12 @@ const {
 
 const validationHandler = require('../utils/middleware/validationHandlers');
 
+const cacheResponse = require('../utils/cacheResponse');
+const {
+  FIVE_MINUTE_IN_SECONDS,
+  SIXTY_MINUTES_IN_SECONDS,
+} = require('../utils/time');
+
 function transactionsApi(app) {
   const router = express.Router();
   app.use('/api/transactions', router);
@@ -16,6 +22,7 @@ function transactionsApi(app) {
   const transactionsService = new TransactionsService();
 
   router.get('/', async function (req, res, next) {
+    cacheResponse(res, FIVE_MINUTE_IN_SECONDS);
     const { tags } = req.query;
     try {
       const transactions = await transactionsService.getTransactions({ tags });
@@ -32,6 +39,7 @@ function transactionsApi(app) {
     '/:transactionId',
     validationHandler({ transactionId: transactionIdSchema }, 'params'),
     async function (req, res, next) {
+      cacheResponse(res, SIXTY_MINUTES_IN_SECONDS);
       const { transactionId } = req.params;
       try {
         const transaction = await transactionsService.getTransaction({
