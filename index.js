@@ -3,7 +3,9 @@ const app = express();
 const debug = require('debug')('app:server');
 
 const { config } = require('./config/index');
+const authApi = require('./routes/auth');
 const transactionsApi = require('./routes/transactions.js');
+const userTransactionsApi = require('./routes/userTransactions');
 
 const {
   logErrors,
@@ -17,7 +19,9 @@ const notFoundHandler = require('./utils/middleware/notFoundHandler');
 app.use(express.json());
 
 //routes
+authApi(app);
 transactionsApi(app);
+userTransactionsApi(app);
 
 //catch 404
 app.use(notFoundHandler);
