@@ -7,6 +7,11 @@
     "DB_USER": "@euka-db-user",
     "DB_PASSWORD": "@euka-db-password",
     "DB_HOST": "@euka-db-host",
-    "DB_NAME": "@euka-db-name"
+    "DB_NAME": "@euka-db-name",
+    "DEFAULT_ADMIN_PASSWORD": "@euka-default-admin-password",
+    "DEFAULT_USER_PASSWORD": "@euka-default-public-password",
+    "AUTH_JWT_SECRET": "@euka-auth-jwt-secret",
+    "ADMIN_API_KEY_TOKEN": "@euka-admin-api-key-token",
+    "PUBLIC_API_KEY_TOKEN": "@euka-public-api-key-token"
   }
 }
