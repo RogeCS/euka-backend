@@ -50,7 +50,7 @@ function userTransactionApi(app) {
   router.post(
     '/',
     passport.authenticate('jwt', { session: false }),
-    scopesValidationHandler(['create-user:transactions']),
+    scopesValidationHandler(['create:user-transactions']),
     validationHandler(createUserTransactionSchema),
     async function (req, res, next) {
       const { body: userTransaction } = req;
@@ -74,7 +74,7 @@ function userTransactionApi(app) {
   router.delete(
     '/:userTransactionId',
     passport.authenticate('jwt', { session: false }),
-    scopesValidationHandler(['delete-user:transactions']),
+    scopesValidationHandler(['delete:user-transactions']),
     validationHandler({ userTransactionId: transactionIdSchema }, 'params'),
     async function (req, res, next) {
       const { userTransactionId } = req.params;
