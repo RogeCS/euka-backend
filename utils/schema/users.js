@@ -9,7 +9,7 @@ const userSchema = {
 
 const createUserSchema = {
   ...userSchema,
-  isAdmin: joi.boolean(),
+  isAdmin: joi.boolean().required(),
 };
 
 const createProviderUserSchema = {

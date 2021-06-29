@@ -7,7 +7,7 @@ const UsersService = require('../services/users');
 const validationHandler = require('../utils/middleware/validationHandlers');
 
 const {
-  createdUserSchema,
+  createUserSchema,
   createProviderUserSchema,
 } = require('../utils/schema/users');
 
@@ -70,7 +70,7 @@ function authApi(app) {
 
   router.post(
     '/sign-up',
-    validationHandler(createdUserSchema),
+    validationHandler(createUserSchema),
     async function (req, res, next) {
       const { body: user } = req;
 
